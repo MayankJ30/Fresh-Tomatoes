@@ -81,28 +81,28 @@ class SubmitHandler(Handler):
         movie = self.request.get("movie")
         search_results = youtube_search(movie+"Trailer")
         if len(search_results) != 0:
-            youtube = "http://www.youtube.com/embed/"+search_results[0]['id']
+            trailer_url = "http://www.youtube.com/embed/"+search_results[0]['id']
         else: 
-            youtube = None
+            trailer_url = None
 
         movie_split = movie.split(" ")
         encoded_movie_name = "%20".join(movie_split)
         #logging.error("url is http://www.omdbapi.com/?t=" + encoded_movie_name)
-        connection = urllib2.urlopen(r"http://www.omdbapi.com/?t=" + encoded_movie_name)
+        connection = urllib2.urlopen(r"http://api.themoviedb.org/3/search/movie?query="+encoded_movie_name+"&api_key="+API_KEY)
         j = connection.read()
-        movie_attributes = json.loads(j)
+        search_results = json.loads(j)
         #logging.error(movie_attributes)
-        if "Error" in movie_attributes:
+        if search_results["total_results"] == 0:
             #logging.error("Error route")
             self.render("signin.html",movie_error="Movie cannot be found/does not exist. Please check spelling.")
         else:
             #logging.error("Correct route")
-            plot = movie_attributes["Plot"]
-            id = movie_attributes["imdbID"]
-            connection = urllib2.urlopen(r"http://api.themoviedb.org/3/find/" + id + "?external_source=imdb_id&api_key="+API_KEY)
+            connection = urllib2.urlopen("http://api.themoviedb.org/3/movie/"+str(search_results["results"][0]["id"])+"?api_key="+API_KEY)
             j = connection.read()
             movie_attributes = json.loads(j)
-            poster_url = r"http://image.tmdb.org/t/p/w500" + movie_attributes["movie_results"][0]["poster_path"]
+            plot = movie_attributes["overview"]
+            name = movie_attributes["title"]
+            poster_url = r"http://image.tmdb.org/t/p/w500" + movie_attributes["poster_path"]
             #logging.error("Past Attribution")
 
             
@@ -111,7 +111,7 @@ class SubmitHandler(Handler):
                 # youtube_id_match = re.search(r'(?<=v=)[^&#]+', youtube)
                 # youtube_id_match = youtube_id_match or re.search(r'(?<=be/)[^&#]+', youtube)
                 # youtube = youtube_id_match.group(0) if youtube_id_match else None
-                u = Movie(name = movie, trailer_url = youtube,poster_url = poster_url, plot = plot )
+                u = Movie(name = name, trailer_url = trailer_url,poster_url = poster_url, plot = plot )
                 u.put()
                 
 
