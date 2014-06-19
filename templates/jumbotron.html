@@ -36,24 +36,12 @@
 
     <div class="container">
       <!-- Example row of columns -->
-      {% set counter = 0 %}
       <div class="row">
         {% for movie in movies %}
-          {% if counter == 3 %}
-            </div>
-            <div class="row">
-              <div class="col-sm-4">
-                <a href="/{{movie.key().id()}}" > <img src="{{movie.poster_url}}"> </a>
-              </div>
-            {% set counter = 0 %}
-          {% else %}
-             <div class="col-sm-4">
-                <a href="/{{movie.key().id()}}" > <img src="{{movie.poster_url}}"> </a>
-              </div>
-          {% endif %}
-          {% set counter = counter + 1 %}
+          <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+            <a href="/{{movie.key().id()}}" > <img src="{{movie.poster_url}}"> </a>
+          </div>
         {% endfor %}
-
       </div>
 
       <hr>
