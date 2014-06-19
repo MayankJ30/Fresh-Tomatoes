@@ -110,7 +110,7 @@ class SubmitHandler(Handler):
             plot = movie_attributes["overview"]
             name = movie_attributes["title"]
             poster_url = r"http://image.tmdb.org/t/p/w300" + movie_attributes["poster_path"]
-            #logging.error("Past Attribution")
+            
 
             
             check = db.GqlQuery('SELECT * FROM Movie WHERE name = :1', movie).get()
