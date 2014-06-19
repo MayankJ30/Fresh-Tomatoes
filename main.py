@@ -14,17 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import webapp2
-import jinja2
 from google.appengine.ext import db
-import os
-import re
-import string
 from apiclient.discovery import build
 from apiclient.errors import HttpError
-import urllib2
-import json
-import logging
+
+import os, re, string, urllib2, json, logging, webapp2, jinja2, cookielib
 
 SECRET = "imsosecret"
 DEVELOPER_KEY = "AIzaSyAgf7k0mQmxF12ywMq1_pxOxFi_OfOuuUs"
@@ -81,7 +75,6 @@ class MainPage(Handler):
         self.render('jumbotron.html', movies=movies)
 
 class SubmitHandler(Handler):
-    
     def get(self):
         self.render("signin.html" , movie_error = None)
     def post(self):
@@ -109,8 +102,8 @@ class SubmitHandler(Handler):
             movie_attributes = json.loads(j)
             plot = movie_attributes["overview"]
             name = movie_attributes["title"]
-            poster_url = r"http://image.tmdb.org/t/p/w300" + movie_attributes["poster_path"]
-            
+            poster_url = r"http://image.tmdb.org/t/p/w500" + movie_attributes["poster_path"]
+            #logging.error("Past Attribution")
 
             
             check = db.GqlQuery('SELECT * FROM Movie WHERE name = :1', movie).get()
@@ -120,9 +113,21 @@ class SubmitHandler(Handler):
                 # youtube = youtube_id_match.group(0) if youtube_id_match else None
                 u = Movie(name = name, trailer_url = trailer_url,poster_url = poster_url, plot = plot )
                 u.put()
-                self.redirect('/')
-            else:
-                self.render("signin.html",movie_error="Movie already exists")
+                
+
+            #     adding this movie to the users movie list
+            #     my_movies = self.request.cookies.get("my_movies")
+            #     if my_movies:
+            #         my_movies = json.loads(my_movies)
+            #         if movie not in my_movies:
+            #             my_movies += [movie]
+            #     else:
+            #         my_movies = [movie]
+            #     self.response.set_cookie("my_movies", json.dumps(my_movies), max_age=315360000)
+            #     self.redirect('/')
+            # else:
+            #     self.render("signin.html",movie_error="Movie already exists")
+
 
 class DetailsHandler(Handler):
     def get(self, movie_id):
