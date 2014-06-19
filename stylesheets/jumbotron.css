@@ -1,0 +1,12 @@
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+img {
+	width: 220px;
+	height: 342px;
+	padding-top: 20px;
+	padding-bottom: 20px
+}

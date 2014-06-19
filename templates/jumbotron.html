@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+ 
+
+
+    <title>Fresh Tomatoes!</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/stylesheets/jumbotron.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+
+          <a class="navbar-brand" href="/">Home</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+        <h2><b>Welcome to Fresh Tomatoes!<b></h2>
+        <p>Do you want to watch a good movie but don't know where to start looking for one? Look no more! Fresh tomatoes is an ever-growing collection of good movies that are worth watching. Submit your favourite movies now! Click on the movie posters below for the movie's details and its trailer.  </p>
+        <p><a class="btn btn-primary btn-lg" role="button" href="/submit">Submit Movie! &raquo;</a></p>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Example row of columns -->
+      {% set counter = 0 %}
+      <div class="row">
+        {% for movie in movies %}
+          {% if counter == 3 %}
+            </div>
+            <div class="row">
+              <div class="col-sm-4">
+                <a href="/{{movie.key().id()}}" > <img src="{{movie.poster_url}}"> </a>
+              </div>
+            {% set counter = 0 %}
+          {% else %}
+             <div class="col-sm-4">
+                <a href="/{{movie.key().id()}}" > <img src="{{movie.poster_url}}"> </a>
+              </div>
+          {% endif %}
+          {% set counter = counter + 1 %}
+        {% endfor %}
+
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>&copy; Made by Mayank Jain using Bootstrap</p>
+      </footer>
+    </div> <!-- /container -->
+
+  </body>
+</html>

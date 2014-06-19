@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Movie Submission</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/stylesheets/signin.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+
+          <a class="navbar-brand" href="/">Home</a>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+      <form class="form-signin" role="form" action="" method="post">
+        <h2 class="form-signin-heading">Movie submission</h2>
+        {% if movie_error %}
+          <input type="text" class="form-control" name="movie" placeholder="Movie Title" required autofocus>
+          <div class = 'error'>
+            {{movie_error}}
+          </div>
+        {% else %}
+          <input type="text2" class="form-control" name="movie" placeholder="Movie Title" required autofocus>
+        {% endif %}
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Submit Movie</button>
+      </form>
+    <hr>
+
+     
+    </div> <!-- /container -->
+
+
+
+  </body>
+</html>

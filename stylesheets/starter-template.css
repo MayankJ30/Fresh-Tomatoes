@@ -1,0 +1,22 @@
+body {
+  padding-top: 35px;
+  color: black;
+}
+.starter-template {
+  padding: 5px 15px;
+  text-align: left;
+}
+img {
+	float: left;
+	padding-top: 50px;
+	padding-right: 30px;
+}
+.text {
+	
+	margin-top: 50px;
+	
+	font-family: 'Verdana'
+}
+iframe {
+	width: 60%;
+}

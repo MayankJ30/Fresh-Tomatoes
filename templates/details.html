@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <title>{{movie.name}}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/stylesheets/starter-template.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+
+          <a class="navbar-brand" href="/">Home</a>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="container">
+
+      <div class="starter-template">
+        <img src="{{movie.poster_url}}">
+        <div class= "text">
+        <h1><i><b>{{movie.name}}</b></i></h1>
+        
+        <p class="lead"> {{movie.plot}} </p>
+        <br>  
+        <iframe width="700" height="315" src="{{movie.trailer_url}}" frameborder="0" allowfullscreen></iframe>
+      </div>
+      </div>
+    <hr>
+
+      <footer>
+        <p>&copy; Made by Mayank Jain using Bootstrap</p>
+      </footer>
+    </div><!-- /.container -->
+
+
+
+  </body>
+</html>
