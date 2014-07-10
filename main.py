@@ -97,17 +97,21 @@ class SubmitHandler(Handler):
             self.render("signin.html",movie_error="Movie cannot be found/does not exist. Please check spelling.")
         else:
             #logging.error("Correct route")
-            result_number = 0
-            poster_url = search_results["results"][result_number]["poster_path"]
+            result_number = -1
+            poster_url = None
             while not poster_url:
                 result_number += 1
                 poster_url = search_results["results"][result_number]["poster_path"]
+                connection = urllib2.urlopen("http://api.themoviedb.org/3/movie/"+str(search_results["results"][result_number]["id"])+"?api_key="+API_KEY)
+                j = connection.read()
+                movie_attributes = json.loads(j)
+                plot = movie_attributes["overview"]
+                logging.error(plot)
+                if not plot:
+                    poster_url = None
+                name = movie_attributes["title"]
             poster_url = r"http://image.tmdb.org/t/p/w500" +  poster_url
-            connection = urllib2.urlopen("http://api.themoviedb.org/3/movie/"+str(search_results["results"][result_number]["id"])+"?api_key="+API_KEY)
-            j = connection.read()
-            movie_attributes = json.loads(j)
-            plot = movie_attributes["overview"]
-            name = movie_attributes["title"]
+            
             # poster_result = movie_attributes["poster_path"]
             # logging.error(poster_result)
             # if poster_result:
@@ -116,8 +120,7 @@ class SubmitHandler(Handler):
                 
             #     self.render("signin.html",movie_error="Movie cannot be found/does not exist. Please check spelling.")
             logging.error(poster_url)
-            logging.error(plot)
-            logging.error(name)
+           
             check = db.GqlQuery('SELECT * FROM Movie WHERE name = :1', movie).get()
             if not check:
                 # youtube_id_match = re.search(r'(?<=v=)[^&#]+', youtube)
