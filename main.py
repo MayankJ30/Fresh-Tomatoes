@@ -121,7 +121,7 @@ class SubmitHandler(Handler):
             #     self.render("signin.html",movie_error="Movie cannot be found/does not exist. Please check spelling.")
             logging.error(poster_url)
            
-            check = db.GqlQuery('SELECT * FROM Movie WHERE name = :1', movie).get()
+            check = db.GqlQuery('SELECT * FROM Movie WHERE name = :1', name).get()
             if not check:
                 # youtube_id_match = re.search(r'(?<=v=)[^&#]+', youtube)
                 # youtube_id_match = youtube_id_match or re.search(r'(?<=be/)[^&#]+', youtube)
