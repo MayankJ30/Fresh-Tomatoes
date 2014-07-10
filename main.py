@@ -65,7 +65,7 @@ class Movie(db.Model):
     name = db.StringProperty(required = True)
     trailer_url = db.StringProperty(required = True)
     poster_url = db.StringProperty(required = True)
-    plot = db.StringProperty(required = True)
+    plot = db.TextProperty(required = True)
     
 class MainPage(Handler):
     def get(self):
@@ -79,7 +79,7 @@ class SubmitHandler(Handler):
         self.render("signin.html" , movie_error = None)
     def post(self):
         movie = self.request.get("movie")
-        search_results = youtube_search(movie+"Trailer")
+        search_results = youtube_search(movie+" Trailer")
         if len(search_results) != 0:
             trailer_url = "http://www.youtube.com/embed/"+search_results[0]['id']
         else: 
