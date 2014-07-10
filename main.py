@@ -97,14 +97,27 @@ class SubmitHandler(Handler):
             self.render("signin.html",movie_error="Movie cannot be found/does not exist. Please check spelling.")
         else:
             #logging.error("Correct route")
-            connection = urllib2.urlopen("http://api.themoviedb.org/3/movie/"+str(search_results["results"][0]["id"])+"?api_key="+API_KEY)
+            result_number = 0
+            poster_url = search_results["results"][result_number]["poster_path"]
+            while not poster_url:
+                result_number += 1
+                poster_url = search_results["results"][result_number]["poster_path"]
+            poster_url = r"http://image.tmdb.org/t/p/w500" +  poster_url
+            connection = urllib2.urlopen("http://api.themoviedb.org/3/movie/"+str(search_results["results"][result_number]["id"])+"?api_key="+API_KEY)
             j = connection.read()
             movie_attributes = json.loads(j)
             plot = movie_attributes["overview"]
             name = movie_attributes["title"]
-            poster_url = r"http://image.tmdb.org/t/p/w500" + movie_attributes["poster_path"]
-            
-            
+            # poster_result = movie_attributes["poster_path"]
+            # logging.error(poster_result)
+            # if poster_result:
+            #     poster_url = r"http://image.tmdb.org/t/p/w500" + movie_attributes["poster_path"]
+            # else: 
+                
+            #     self.render("signin.html",movie_error="Movie cannot be found/does not exist. Please check spelling.")
+            logging.error(poster_url)
+            logging.error(plot)
+            logging.error(name)
             check = db.GqlQuery('SELECT * FROM Movie WHERE name = :1', movie).get()
             if not check:
                 # youtube_id_match = re.search(r'(?<=v=)[^&#]+', youtube)
@@ -112,6 +125,7 @@ class SubmitHandler(Handler):
                 # youtube = youtube_id_match.group(0) if youtube_id_match else None
                 u = Movie(name = name, trailer_url = trailer_url,poster_url = poster_url, plot = plot )
                 u.put()
+                self.redirect('/')
                 
 
             #     adding this movie to the users movie list
@@ -123,9 +137,9 @@ class SubmitHandler(Handler):
             #     else:
             #         my_movies = [movie]
             #     self.response.set_cookie("my_movies", json.dumps(my_movies), max_age=315360000)
-            #     self.redirect('/')
-            # else:
-            #     self.render("signin.html",movie_error="Movie already exists")
+
+            else:
+                self.render("signin.html",movie_error="Movie already exists")
 
 
 class DetailsHandler(Handler):
