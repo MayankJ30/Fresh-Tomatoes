@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import division
 from google.appengine.ext import db
 from apiclient.discovery import build
 from apiclient.errors import HttpError
@@ -66,10 +67,17 @@ class Movie(db.Model):
     trailer_url = db.StringProperty(required = True)
     poster_url = db.StringProperty(required = True)
     plot = db.TextProperty(required = True)
-    
+    total_ratings = db.IntegerProperty(required = True)
+    rating = db.IntegerProperty(required = True)
+    star_5 = db.IntegerProperty(required = True)
+    star_4 = db.IntegerProperty(required = True)
+    star_3 = db.IntegerProperty(required = True)
+    star_2 = db.IntegerProperty(required = True)
+    star_1 = db.IntegerProperty(required = True)
+
 class MainPage(Handler):
     def get(self):
-        movies = db.GqlQuery("select * from Movie ")
+        movies = db.GqlQuery("SELECT * from Movie ORDER BY rating DESC ")
         my_movie_names = self.request.cookies.get("my_movie_names")
         my_movies = None
         submitted_movies = []
@@ -85,7 +93,41 @@ class MainPage(Handler):
         
         #self.write("hello")
         self.render('jumbotron.html', submitted_movies=submitted_movies, my_movies=my_movies)
+    def post(self):
+        user_rating = self.request.get("rating")
+        movie_id = self.request.get("movie")
+        key = db.Key.from_path('Movie', int(movie_id))
+        movie = db.get(key)
+        total_ratings = movie.total_ratings
+        total_ratings += 1
+        star_5 = movie.star_5
+        star_4 = movie.star_4
+        star_3 = movie.star_3
+        star_2 = movie.star_2
+        star_1 = movie.star_1
+        if int(user_rating) == 1: 
+            star_1 += 1
+            movie.star_1 = star_1
+        elif int(user_rating) == 2: 
+            star_2 += 1
+            movie.star_2 = star_2
+        elif int(user_rating) == 3: 
+            star_3 += 1
+            movie.star_3 = star_3
+        elif int(user_rating) == 4: 
+            star_4 += 1
+            movie.star_4 = star_4
+        elif int(user_rating) == 5: 
+            star_5 += 1
+            movie.star_5 = star_5
+        movie.rating = int(round((5*star_5 + 4*star_4 + 3*star_3 + 2*star_2 + 1*star_1)/total_ratings)) 
+        movie.total_ratings = total_ratings
+        movie.put()
+        logging.error(movie.rating)
+        logging.error(movie.name)
+        logging.error(user_rating)
 
+        self.redirect("/")
 class SubmitHandler(Handler):
     def get(self):
         self.render("signin.html" , movie_error = None)
@@ -138,7 +180,8 @@ class SubmitHandler(Handler):
                 # youtube_id_match = re.search(r'(?<=v=)[^&#]+', youtube)
                 # youtube_id_match = youtube_id_match or re.search(r'(?<=be/)[^&#]+', youtube)
                 # youtube = youtube_id_match.group(0) if youtube_id_match else None
-                u = Movie(name = name, trailer_url = trailer_url,poster_url = poster_url, plot = plot )
+                u = Movie(name=name,trailer_url=trailer_url,poster_url=poster_url,plot=plot,rating=0,total_ratings=0,
+                           star_5=0,star_4=0,star_3=0,star_2=0,star_1=0)
                 u.put()
                 self.redirect('/')
                 

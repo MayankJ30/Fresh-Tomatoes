@@ -11,8 +11,10 @@
 
     <!-- Custom styles for this template -->
     <link href="/stylesheets/jumbotron.css" rel="stylesheet">
+    <link href="/stylesheets/css/star-rating.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="/stylesheets/js/bootstrap.min.js"></script>
+    <script src="/stylesheets/js/star-rating.js" type="text/javascript"></script>
 
   </head>
 
@@ -50,6 +52,13 @@
           {% for movie in submitted_movies %}
             <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
               <a href="/{{movie.key().id()}}" > <img src="{{movie.poster_url}}"> </a>
+            <form method = "post" role="form" action="" class="form-inline">
+            <div class="form-group">
+            <input name="rating" id="input-2b" type="number" class="rating" min="0" max="5" step="1" data-size="xs" data-show-caption="false" data-show-clear = "false" value="{{movie.rating}}">
+            <input type="hidden" name="movie" value={{movie.key().id()}}>
+          </div>
+            <button class="btn" type="submit">Submit</button>
+            </form>
             </div>
           {% endfor %}
         </div>
@@ -60,6 +69,13 @@
             {% for movie in my_movies %}
               <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
                 <a href="/{{movie.key().id()}}" > <img src="{{movie.poster_url}}"> </a>
+              <form method = "post" role="form" action="" class="form-inline">
+              <div class="form-group">
+              <input name="rating" id="input-2b" type="number" class="rating" min="0" max="5" step="1" data-size="xs" data-show-caption="false" data-show-clear = "false" value="{{movie.rating}}">
+              <input type="hidden" name="movie" value={{movie.key().id()}}>
+            </div>
+              <button class="btn" type="submit">Submit</button>
+              </form>
               </div>
             {% endfor %}
           {% else %}

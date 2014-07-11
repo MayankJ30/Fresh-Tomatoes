@@ -11,3 +11,22 @@ img {
 h4 {
 	margin-top: 20px;
 }
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+	img {
+		height: 497px;
+	}
+ }
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+	img {
+		height: 420px;
+	}
+ }
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { 
+	img {
+		height: 374px;
+	}
+ }
