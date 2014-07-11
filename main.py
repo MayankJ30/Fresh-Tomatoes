@@ -70,9 +70,21 @@ class Movie(db.Model):
 class MainPage(Handler):
     def get(self):
         movies = db.GqlQuery("select * from Movie ")
+        my_movie_names = self.request.cookies.get("my_movie_names")
+        my_movies = None
+        submitted_movies = []
+        if my_movie_names:
+            my_movies = []
+            for movie in movies:
+                if movie.name in my_movie_names:
+                    my_movies += [movie] 
+                else: 
+                    submitted_movies += [movie]
+        else:
+            submitted_movies = movies
         
         #self.write("hello")
-        self.render('jumbotron.html', movies=movies)
+        self.render('jumbotron.html', submitted_movies=submitted_movies, my_movies=my_movies)
 
 class SubmitHandler(Handler):
     def get(self):
@@ -130,17 +142,16 @@ class SubmitHandler(Handler):
                 u.put()
                 self.redirect('/')
                 
-
-            #     adding this movie to the users movie list
-            #     my_movies = self.request.cookies.get("my_movies")
-            #     if my_movies:
-            #         my_movies = json.loads(my_movies)
-            #         if movie not in my_movies:
-            #             my_movies += [movie]
-            #     else:
-            #         my_movies = [movie]
-            #     self.response.set_cookie("my_movies", json.dumps(my_movies), max_age=315360000)
-
+                # Adding this movie to the users movie list
+                my_movie_names = self.request.cookies.get("my_movie_names")
+                if my_movie_names:
+                    my_movie_names = json.loads(my_movie_names)
+                    if name not in my_movie_names:
+                        my_movie_names += [name]
+                else:
+                    my_movie_names = [name]
+                self.response.set_cookie("my_movie_names", json.dumps(my_movie_names), max_age=315360000)
+                logging.error(my_movie_names)
             else:
                 self.render("signin.html",movie_error="Movie already exists")
 

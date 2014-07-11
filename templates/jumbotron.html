@@ -11,6 +11,8 @@
 
     <!-- Custom styles for this template -->
     <link href="/stylesheets/jumbotron.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="/stylesheets/js/bootstrap.min.js"></script>
 
   </head>
 
@@ -35,13 +37,38 @@
     </div>
 
     <div class="container">
-      <!-- Example row of columns -->
-      <div class="row">
-        {% for movie in movies %}
-          <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-            <a href="/{{movie.key().id()}}" > <img src="{{movie.poster_url}}"> </a>
-          </div>
-        {% endfor %}
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="active"><a href="#movies" role="tab" data-toggle="tab">Movies</a></li>
+        <li><a href="#my_movies" role="tab" data-toggle="tab">My Movies</a></li>
+      </ul>
+
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="movies">
+        <div class="row">
+          {% for movie in submitted_movies %}
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+              <a href="/{{movie.key().id()}}" > <img src="{{movie.poster_url}}"> </a>
+            </div>
+          {% endfor %}
+        </div>
+        </div>
+        <div class="tab-pane fade" id="my_movies">
+        <div class="row">
+          {% if my_movies %}
+            {% for movie in my_movies %}
+              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                <a href="/{{movie.key().id()}}" > <img src="{{movie.poster_url}}"> </a>
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <h4> Nothing submitted yet. </h4>
+            </div>
+          {% endif %}          
+        </div>
+        </div>
       </div>
 
       <hr>
