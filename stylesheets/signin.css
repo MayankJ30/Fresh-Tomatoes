@@ -1,7 +1,7 @@
 body {
   padding-top: 40px;
   padding-bottom: 40px;
-  background-color: #eee;
+  
 }
 
 .form-signin {
@@ -43,4 +43,7 @@ body {
   margin-bottom: 10px;
   color: red;
   font-size: 12px;
+}
+.form-signin-heading {
+  font-size: 3em;
 }

@@ -209,6 +209,30 @@ class DetailsHandler(Handler):
             self.render("details.html", movie = movie)
 
 
+
+
+class TestHandler(Handler):
+    def get(self):
+        self.render("test_ajax.html")
+        
+class AjaxHandler(Handler):
+    def post(self):
+        numberOfRecords =int(self.request.get('numberOfRecords'))
+        logging.error(numberOfRecords)
+        movies = db.GqlQuery("SELECT * from Movie").count()
+        logging.error(movies)
+        if movies != numberOfRecords:
+            logging.error("Yes")
+            response  = {'isUpdateAvail': "Yes","count": movies}
+            self.response.out.write(json.dumps(response))
+        else:
+            logging.error("No")
+            response =  {'isUpdateAvail': "No"}
+            self.response.out.write(json.dumps(response))
+        
+
+
 app = webapp2.WSGIApplication([('/', MainPage),
+                                ('/ajax', AjaxHandler),
                                ('/submit' , SubmitHandler),
                                ('/([0-9]+)',DetailsHandler)], debug=True)

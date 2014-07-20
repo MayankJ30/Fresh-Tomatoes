@@ -11,6 +11,10 @@ img {
 h4 {
 	margin-top: 20px;
 }
+form {
+	padding-left: 20px;
+}
+
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
 	img {
