@@ -1,3 +1,13 @@
+stylesheets/css/bootstrap-theme.css
+stylesheets/css/bootstrap-theme.css.map
+stylesheets/css/bootstrap-theme.min.css
+stylesheets/css/bootstrap.css
+stylesheets/css/bootstrap.css.map
+stylesheets/css/bootstrap.min.css
+stylesheets/fonts/
+templates/test_ajax.html
+templates/test_fb.html
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
